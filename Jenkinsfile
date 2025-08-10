@@ -1,7 +1,7 @@
 pipeline {
     agent any
     environment {
-        PROJECT_NAME = 'MyLearningProject1'
+        PROJECT_NAME = 'MyLearningProject01231'
         EMAIL = 'nichetrainings123@gmail.com' // replace with a valid email
     }
 
