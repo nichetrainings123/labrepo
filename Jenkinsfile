@@ -2,7 +2,9 @@ pipeline {
     agent any
     environment {
         PROJECT_NAME = 'MyLearningProject01'
-        EMAIL = 'nichetrainings123@gmail.com' // replace with a valid email,
+        EMAIL = 'nichetrainings123@gmail.com' // replace with a valid email
+        NGINX_DIR = '/var/www/html'
+        GIT_REPO = 'https://github.com/yourusername/yourrepo.git' // replace with your repo
     }
 
     options {
@@ -12,40 +14,31 @@ pipeline {
 
     stages {
 
-        stage('Checkout Code') {
+        stage('Clone Project Zip') {
             steps {
-                echo "Cloning Git repository..."
-                checkout scm
+                echo "Cloning project.zip from Git repository..."
+                sh """
+                    git clone ${GIT_REPO} temp_repo
+                    cp temp_repo/project.zip .
+                    rm -rf temp_repo
+                """
             }
         }
 
-        stage('Setup Environment') {
+        stage('Deploy to Nginx') {
             steps {
-                echo "Setting up environment variables and dependencies..."
-                sh 'echo "Node version:" && node -v || echo Node not installed'
+                echo "Deploying project.zip to Nginx default folder..."
+                // Remove old files
+                sh "sudo rm -rf ${NGINX_DIR}/*"
+                // Copy new zip
+                sh "sudo cp project.zip ${NGINX_DIR}/"
+                // Unzip in Nginx folder
+                sh "cd ${NGINX_DIR} && sudo unzip -o project.zip && sudo rm project.zip"
+                // Fix permissions
+                sh "sudo chown -R www-data:www-data ${NGINX_DIR}"
             }
         }
 
-        stage('Build') {
-            steps {
-                echo "Simulating build process..."
-                sh 'mkdir -p build && echo "Compiled Code" > build/output.txt'
-            }
-        }
-
-        stage('Unit Tests') {
-            steps {
-                echo "Running unit tests..."
-                sh 'echo "All tests passed!"'
-            }
-        }
-
-        stage('Archive Artifacts') {
-            steps {
-                echo "Archiving build artifacts..."
-                archiveArtifacts artifacts: 'build/**', fingerprint: true
-            }
-        }
     }
 
     post {
