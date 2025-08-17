@@ -2,7 +2,6 @@ pipeline {
     agent any
     environment {
         PROJECT_NAME = 'MyLearningProject01'
-        EMAIL = 'nichetrainings123@gmail.com' // replace with a valid email
         NGINX_DIR = '/var/www/html'
         GIT_REPO = 'https://github.com/nichetrainings123/labrepo.git' // replace with your repo
     }
@@ -45,14 +44,11 @@ pipeline {
         success {
             echo "Pipeline executed successfully."
         }
-########################################################
+
         failure {
-            echo "Pipeline failed. Sending email..."
-            mail to: "${EMAIL}",
-                 subject: "Jenkins Pipeline Failed: ${PROJECT_NAME}",
-                 body: "Check the Jenkins job for details."
+            echo "Pipeline failed."
         }
-########################################################
+
         always {
             echo "Cleaning up workspace..."
             cleanWs()
