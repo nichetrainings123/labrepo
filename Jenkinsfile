@@ -45,12 +45,14 @@ pipeline {
         success {
             echo "Pipeline executed successfully."
         }
+########################################################
         failure {
             echo "Pipeline failed. Sending email..."
             mail to: "${EMAIL}",
                  subject: "Jenkins Pipeline Failed: ${PROJECT_NAME}",
                  body: "Check the Jenkins job for details."
         }
+########################################################
         always {
             echo "Cleaning up workspace..."
             cleanWs()
