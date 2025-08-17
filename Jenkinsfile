@@ -4,7 +4,7 @@ pipeline {
         PROJECT_NAME = 'MyLearningProject01'
         EMAIL = 'nichetrainings123@gmail.com' // replace with a valid email
         NGINX_DIR = '/var/www/html'
-        GIT_REPO = 'https://github.com/yourusername/yourrepo.git' // replace with your repo
+        GIT_REPO = 'https://github.com/nichetrainings123/labrepo.git' // replace with your repo
     }
 
     options {
